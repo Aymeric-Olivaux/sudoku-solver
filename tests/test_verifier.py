@@ -48,6 +48,31 @@ class TestVerifier(unittest.TestCase):
         b = Sudoku.verifier(sudoku)
         self.assertEqual(b, False)
 
+    def test_verifier_with_zero_True_1(self):
+        string = "010000000"
+        string += "0" * 9 * 8
+        string = string
+        sudoku = Sudoku.build_with_string(string)
+        b = Sudoku.verifier_with_zero(sudoku)
+        self.assertEqual(True, b)
+
+    def test_verifier_with_zero_True_2(self):
+        string = "010000020"
+        string += "0" * 9 * 8
+        string = string
+
+        sudoku = Sudoku.build_with_string(string)
+        b = Sudoku.verifier_with_zero(sudoku)
+        self.assertEqual(True, b)
+
+    def test_verifier_with_zero_False_1(self):
+        string = "0100000100"
+        string += "0" * 9 * 8
+        string = string
+        sudoku = Sudoku.build_with_string(string)
+        b = Sudoku.verifier_with_zero(sudoku)
+        self.assertEqual(False, b)
+
 
 if __name__ == '__main__':
     unittest.main()

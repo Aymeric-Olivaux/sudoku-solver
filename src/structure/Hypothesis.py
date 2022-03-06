@@ -1,3 +1,5 @@
+from random import random
+
 from src.structure.Sudoku import Sudoku
 
 
@@ -17,7 +19,7 @@ class Hypothesis:
                 self.hypothesis_i_j(i, j)
 
     def hypothesis_i_j(self, i, j):
-        if self.sudoku.sudoku[i][j] != 0:
+        if self.sudoku.core[i][j] != 0:
             return
         for k in [i for i in range(1, Sudoku.line_nb + 1)]:
             a = Hypothesis.is_in_line_i(self.sudoku, i, k)
@@ -29,14 +31,14 @@ class Hypothesis:
     @staticmethod
     def is_in_line_i(sudoku, i, number):
         for j in range(Sudoku.column_nb):
-            if sudoku.sudoku[i][j] == number:
+            if sudoku.core[i][j] == number:
                 return True
         return False
 
     @staticmethod
     def is_in_column_j(sudoku, j, number):
         for i in range(Sudoku.line_nb):
-            if sudoku.sudoku[i][j] == number:
+            if sudoku.core[i][j] == number:
                 return True
         return False
 
@@ -48,9 +50,22 @@ class Hypothesis:
         b = False
         for i2 in range(origin_cube_line, origin_cube_line + len_cube):
             for j2 in range(origin_cube_column, origin_cube_column + len_cube):
-                if sudoku.sudoku[i2][j2] == numbers:
+                if sudoku.core[i2][j2] == numbers:
                     b = True
         return b
+
+    def fill_one_case_random(self, sudoku, i, j):
+        done = False
+        hypothesis = Hypothesis(sudoku.core)
+        while not done:
+            if sudoku.core[i][j] == 0:
+                rand3 = random.randint(0, len(hypothesis.core[i][j]) - 1)
+                sudoku.core[i][j] = hypothesis.core[i][j][rand3]
+                if not sudoku.verifier():
+                    sudoku.core[i][j] = 0
+                    continue
+            else:
+                return
 
     def __str__(self):
         string: str = ""
